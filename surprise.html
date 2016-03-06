@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Surprise</title>
+</head>
+<body>
+    <h1>Surprise</h1>
+    <form>
+        <fieldset>
+            <legend>Stealth Check</legend>
+            <label>Stealth Modifier</label>
+            <input name="stealthMod" value="4">
+            <button id="die1">roll d20</button>
+            <span id="roll">...waiting to roll...</span>
+            <span>&gt;</span>
+            <label>Target's Passive Perception</label>
+            <input name="targetPassivePerception" value="12">
+            <span id="result">...waiting result...</span>
+        </fieldset>
+        <fieldset>
+            <legend>Combatants</legend>
+            <table id="combatants">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Init Modifier</th>
+                        <th>Hit Points</th>
+                        <th>Target</th>
+                        <th>Intiative</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbdoy>
+                    <tr>
+                        <td>Himo</td>
+                        <td><input name="p1_dexmod" value="3"></td>
+                        <td>12</td>
+                        <td>Golbin Archer #2</td>
+                        <td>... not rolled ...</td>
+                        <td><button>attack</button></td>
+                    </tr>
+                    <tr>
+                        <td>Goblin Archer #1</td>
+                        <td><input name="p2_dexmod" value="2"></td>
+                        <td>8</td>
+                        <td>Himo</td>
+                        <td>... not rolled ...</td>
+                        <td><button>attack</button></td>
+                    </tr>
+                    <tr>
+                        <td>Goblin Archer #2</td>
+                        <td><input name="p3_dexmod" value="2"></td>
+                        <td>5</td>
+                        <td>Himo</td>
+                        <td>... not rolled ...</td>
+                        <td><button>attack</button></td>
+                    </tr>
+                </tbdoy>
+            </table>
+            <button id="die2">roll initiative</button>
+        </fieldset>
+    </form>
+    <script src="http://code.jquery.com/jquery-2.2.1.js"></script>
+    <script>
+        $('#die1').click(function(ev){
+            ev.preventDefault();
+            var roll = Math.floor(Math.random()*20)+1;
+            console.log(roll);
+            console.log($('[name="stealthMod"]').val());
+            var result = roll + parseInt($('[name="stealthMod"]').val());
+            $("#roll").text(result);
+            var targetNo = parseInt($('[name="targetPassivePerception"]').val());
+            console.log(targetNo);
+            if (result > targetNo) {
+                $('#result').text('Target is surprised');
+            } else {
+                $('#result').text('Target is not surpised');
+            }
+        });
+
+        $('#die2').click(function(ev){
+            ev.preventDefault();
+            $('#combatants td:nth-child(2) input').each(function(idx, el){
+                console.log(idx);
+                console.log(el);
+                var roll = Math.floor(Math.random()*20)+1;
+                var mod = parseInt($(el).val());
+                console.log($(el).next().next());
+                $(el).parent().next().next().next().text(roll + mod);
+            });
+        });
+    </script>
+</body>
+</html>
